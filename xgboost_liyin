@@ -1,0 +1,59 @@
+import numpy as np
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.tree import DecisionTreeClassifier
+import xgboost
+from sklearn.metrics import roc_auc_score
+from sklearn.ensemble import VotingClassifier
+
+xg1 = xgboost.XGBClassifier(eval_metric='auc', scale_pos_weight = 1.02, 
+                            learning_rate = 0.06, min_child_weight_s = 1.4100000000000006, 
+                            n_estimators = 270, subsample = 0.9400000000000001, 
+                            reg_lambda = 1.04, min_split_loss =0.025, max_depth = 11)
+
+xg2 = xgboost.XGBClassifier(eval_metric='auc', scale_pos_weight = 1.02, 
+                            learning_rate = 0.06, min_child_weight_s = 0.9900000000000001, 
+                            n_estimators = 315, subsample = 0.91, 
+                            reg_lambda = 1.08, min_split_loss =0.005, max_depth = 8)
+
+xg3 = xgboost.XGBClassifier(eval_metric='auc', scale_pos_weight = 1.0, 
+                            learning_rate = 0.08, min_child_weight_s = 1.4100000000000006, 
+                            n_estimators = 225, subsample = 0.9, 
+                            reg_lambda = 1.04, min_split_loss =0.025, max_depth = 11)
+
+xg4 = xgboost.XGBClassifier(eval_metric='auc', scale_pos_weight = 0.98, 
+                            learning_rate = 0.06, min_child_weight_s = 1.08, 
+                            n_estimators = 255, subsample = 0.91, 
+                            reg_lambda = 1.02, min_split_loss =0.01, max_depth = 10)
+
+eclf_4 = VotingClassifier(estimators=[('xg1', xg1), ('xg2', xg2),('xg3', xg3), ('xg4', xg4)],voting='soft', 
+                         weights=[1,1,1,1],flatten_transform=True)
+
+
+score_eclf_4 = cross_val_score(eclf_4,X,Y,cv=10,n_jobs=10,scoring='roc_auc')
+
+import pandas as pd
+df_test = pd.read_csv("test_2008.csv")
+data_test = df_test.values
+
+X_test = data_test[:,1:]
+
+eclf_4.fit(X,Y)
+
+y_predict = eclf_4.predict(X_test)
+
+y_prob = eclf_4.predict_proba(X_test)
+
+y_prob_1 = y_prob[:,1]
+
+import pandas as pd
+df_sub = pd.read_csv("sample_submission.csv")
+
+data_sub = df_sub.values
+
+for i in range(len(data_sub)):
+    df_sub.loc[i,'target'] = y_prob_1[i]
+
+export_csv = df_sub.to_csv ('export_dataframe.csv', index = None, header=True) 
