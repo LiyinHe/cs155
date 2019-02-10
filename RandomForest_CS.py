@@ -18,7 +18,7 @@ X_train = data_train.values[:, 1:-1]
 y_train = data_train.values[:, -1]
 
 # Define training set for hyperparameter selection
-inds = np.arange(len(X_train))
+inds = np.arange(len(X_train))[:1000]
 X = X_train[inds]
 y = y_train[inds]
 
@@ -31,13 +31,13 @@ parameters = {'n_estimators': np.arange(1000, 3100, 100),
 # Perform hyperparameter testing
 clf = RandomizedSearchCV(RandomForestClassifier(), parameters,
                          scoring='roc_auc', return_train_score=True,
-                         n_iter=100, n_jobs=-1, pre_dispatch='2*n_jobs')
+                         n_iter=1, n_jobs=-1, pre_dispatch='2*n_jobs')
 clf.fit(X, y)
 
 # Save results for top 10 models
 inds_top = np.argsort(clf.cv_results_['rank_test_score'])[:10]
-params = clf.cv_results_['params'][inds_top]
-mean_test = clf.cv_results_['mean_test_score'][inds_top]
+params = np.array([clf.cv_results_['params'][i] for i in inds_top])
+mean_test = np.array([clf.cv_results_['mean_test_score'][i] for i in inds_top])
 model = clf.best_estimator_
 filename = 'RandomForest_{:s}.pkl'.format(time.strftime('%Y%m%d-%H%M'))
 with open(filename, 'wb') as file:
