@@ -18,7 +18,7 @@ X_train = data_train.values[:, 1:-1]
 y_train = data_train.values[:, -1]
 
 # Define training set for hyperparameter selection
-inds = np.arange(len(X_train))[:10000]
+inds = np.arange(len(X_train))
 X = X_train[inds]
 y = y_train[inds]
 
@@ -31,7 +31,7 @@ parameters = {'n_estimators': np.arange(1000, 3100, 100),
 # Perform hyperparameter testing
 clf = RandomizedSearchCV(RandomForestClassifier(), parameters,
                          scoring='roc_auc', return_train_score=True,
-                         n_iter=1, n_jobs=-1, pre_dispatch='2*n_jobs')
+                         n_iter=100, n_jobs=-1, pre_dispatch='2*n_jobs')
 clf.fit(X, y)
 
 # Save results for top 10 models
