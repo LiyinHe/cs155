@@ -9,9 +9,6 @@ import pandas as pd
 import pickle
 import time
 
-import matplotlib.pyplot as plt
-%matplotlib inline
-
 
 # Read in training data
 data_train = pd.read_csv(os.path.join('data', 'train_2008.csv'))
