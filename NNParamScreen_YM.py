@@ -2,10 +2,6 @@ import NeuroNetwork_YM
 import pandas as pd
 import numpy as np
 
-from keras.models import Sequential
-
-from sklearn.ensemble import VotingClassifier
-
 if __name__ == "__main__":
     df_train = np.random.permutation(np.array(pd.read_csv("./data/train_2008.csv")))
     X_train = df_train[0:55000, 0:-1]

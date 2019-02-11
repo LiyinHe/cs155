@@ -40,13 +40,13 @@ def generate_idx50():
 def reduceX(X):
     X_reduced = [a for idx, a in enumerate(X.T) if idx in idx50]
     X_reduced = np.array(X_reduced).T
-    print(X_reduced.shape)
+    # print(X_reduced.shape)
     return X_reduced
 
 idx50 = generate_idx50()
 
 class NNmodel_YM:
-    def __init__(self, dpRate=0.5):
+    def __init__(self, dpRate=0.45):
         self.normFactor = 1
         
         self.model = Sequential()
@@ -70,7 +70,7 @@ class NNmodel_YM:
         self.model.compile(optimizer='adam', loss='mean_squared_logarithmic_error', metrics=['accuracy'])
         # self.model.save('./NNtemp/UntrainedModel.h5')
 
-    def fit(self, X_train, Y_train, epoch=50, verb=1):
+    def fit(self, X_train, Y_train, epoch=5, verb=1):
         X_train_reduced = reduceX(X_train)
         self.normFactor = np.std(X_train_reduced, 0)
         X_train_reduced = X_train_reduced / self.normFactor
