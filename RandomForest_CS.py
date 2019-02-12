@@ -11,11 +11,15 @@ import time
 
 
 class RFmodel_CS:
-    def __init__(self, rank=1):
-        # Initialize model with specified performance rank (up to 10)
+    def __init__(self, rank=1, n_estimators=None):
+        # Initialize model with hyperparameters of
+        # specified performance rank (up to 10)
         with open('RandomForest_params.pkl', 'rb') as file:
             params, mean_test = pickle.load(file)
-        self.model = RandomForestClassifier(**params[rank - 1])
+        model_params = params[rank - 1]
+        if n_estimators is not None:
+            model_params['n_estimators'] = n_estimators
+        self.model = RandomForestClassifier(**model_params)
 
     def fit(self, X_train, y_train):
         self.model.fit(X_train[:, 1:], y_train)
