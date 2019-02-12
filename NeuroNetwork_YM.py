@@ -79,7 +79,7 @@ class NNmodel_YM:
 
     def predict(self, X_test):
         X_test_reduced = reduceX(X_test) / self.normFactor
-        return self.model.predict(X_test_reduced)
+        return self.model.predict(X_test_reduced)[:, 0]
 
     def evaluate(self, X_test, Y_test):
         X_test_reduced = reduceX(X_test) / self.normFactor

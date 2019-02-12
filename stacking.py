@@ -27,17 +27,20 @@ if __name__ == "__main__":
         for jdx, classifier in enumerate(classifiers):
             model = classifier()
             model.fit(xtrain, ytrain)
-            pdctFeatures[epIdx, jdx] =  model.predict(xcross)[:, 0]
+            pdctFeatures[epIdx, jdx] =  model.predict(xcross)
 
     ensLog = LogisticRegression()
     ensLog.fit(pdctFeatures, Y_train)
 
     df_test08 = np.array(pd.read_csv("./data/test_2008.csv"))
     X_test08 = df_test08
+
     feature08 = []
+    trainedModel = []
     for classifier in classifiers:
         model = classifier()
         model.fit(X_train, Y_train)
+        trainedModel.append(model)
         feature08.append(model.predict(X_test08))
     feature08 = np.hstack(feature08)
 
