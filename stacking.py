@@ -1,5 +1,6 @@
 import NeuroNetwork_YM
 import RandomForest_CS
+import xgboost_eclf7
 import pandas as pd
 import numpy as np
 
@@ -14,7 +15,9 @@ if __name__ == "__main__":
     epIdice.append(np.arange(52000, len(X_train)))
 
     classifiers = [NeuroNetwork_YM.NNmodel_YM,
-                   RandomForest_CS.RFmodel_CS]
+                   RandomForest_CS.RFmodel_CS,
+                   xgboost_eclf7.xgbooster]
+
     pdctFeatures = np.zeros((len(X_train), len(classifiers)))
 
     for idx, epIdx in enumerate(epIdice):
@@ -50,10 +53,3 @@ if __name__ == "__main__":
 
     submitPD = pd.DataFrame(skPredicts, index=X_test08[:, 0], columns=['target'])
     submitPD.to_csv('./predictions/skPredicts_YM.csv', index_label='id')
-
-
-    # eclf = VotingClassifier(estimators=[('NN1', Sequential()), ('NN2', Sequential())])
-    # eclf.fit(X_train, Y_train)
-
-
-    # print(epIdx)
