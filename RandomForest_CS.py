@@ -11,7 +11,7 @@ import time
 
 
 class RFmodel_CS:
-    def __init__(self, rank=1, n_estimators=None):
+    def __init__(self, rank=1, n_estimators=5):
         # Initialize model with hyperparameters of
         # specified performance rank (up to 10)
         with open('RandomForest_params.pkl', 'rb') as file:
@@ -25,7 +25,7 @@ class RFmodel_CS:
         self.model.fit(X_train[:, 1:], y_train)
 
     def predict(self, X_test):
-        return self.predict_proba(X_test[:, 1:])[:, 1]
+        return self.model.predict_proba(X_test[:, 1:])[:, 1]
 
 def main():
     # Read in training data

@@ -14,7 +14,7 @@ if __name__ == "__main__":
     epIdice.append(np.arange(52000, len(X_train)))
 
     classifiers = [NeuroNetwork_YM.NNmodel_YM,
-                   RandomForest_CS.RFmodel_CS(n_estimators=5)]
+                   RandomForest_CS.RFmodel_CS]
     pdctFeatures = np.zeros((len(X_train), len(classifiers)))
 
     for idx, epIdx in enumerate(epIdice):
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         model.fit(X_train, Y_train)
         trainedModel.append(model)
         feature08.append(model.predict(X_test08))
-    feature08 = np.hstack(feature08)
+    feature08 = np.vstack(feature08).T
 
     skPredicts = ensLog.predict_proba(feature08)[:, 1]
 
