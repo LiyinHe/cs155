@@ -54,7 +54,7 @@ class xgbooster():
             estiList = [('xg1', xg1), ('xg2', xg2),('xg3', xg3),('xg4', xg4), ('xg5', xg5),('xg6', xg6),('xg7', xg7)]
 
         
-        eclf_7 = VotingClassifier(estimators=estiList, voting='soft', weights=[1]*len(estiLst), flatten_transform=True)
+        eclf_7 = VotingClassifier(estimators=estiList, voting='soft', weights=[1]*len(estiList), flatten_transform=True)
 
         self.model = eclf_7
 
