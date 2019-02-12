@@ -1,4 +1,5 @@
 import NeuroNetwork_YM
+import RandomForest_CS
 import pandas as pd
 import numpy as np
 
@@ -12,7 +13,8 @@ if __name__ == "__main__":
     epIdice = [np.arange(a, a + 13000) for a in [0, 13000, 26000, 39000]]
     epIdice.append(np.arange(52000, len(X_train)))
 
-    classifiers = [NeuroNetwork_YM.NNmodel_YM, NeuroNetwork_YM.NNmodel_YM]
+    classifiers = [NeuroNetwork_YM.NNmodel_YM,
+                   RandomForest_CS.RFmodel_CS(n_estimators=5)]
     pdctFeatures = np.zeros((len(X_train), len(classifiers)))
 
     for idx, epIdx in enumerate(epIdice):
