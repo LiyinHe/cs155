@@ -11,7 +11,7 @@ import time
 
 
 class RFmodel_CS:
-    def __init__(self, rank=1, n_estimators=5):
+    def __init__(self, rank=1, n_estimators=None):
         # Initialize model with hyperparameters of
         # specified performance rank (up to 10)
         with open('RandomForest_params.pkl', 'rb') as file:
